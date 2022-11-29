@@ -1,0 +1,87 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "env": {
+      "value": "demo"
+    },
+    "sendLogsToStorageAccount": {
+      "value": true
+    },
+    "graphAdminPassword": {
+      "value": ""
+    },
+    "synapseSqlPassword": {
+      "value": ""
+    },
+    "fsClientId": {
+      "value": "00d35007-5eef-4109-95b4-f92d59bea7dd"
+    },
+    "fsclientsecret": {
+      "value": ""
+    },
+    "fhirTesterPrincipalId": {
+      "value": "3ba090b0-c9a3-412d-93ad-e4aa8b528830"
+    },
+    "synapseInitialWorkspaceAdminObjectID": {
+      "value": "5b296cf9-9e2f-471d-ba10-04494b602c5d"
+    },
+    "vaultPrincipalIds": {
+      "value": [
+        "5b296cf9-9e2f-471d-ba10-04494b602c5d",
+        "78ff7aef-7f4d-4874-9210-486c3c33f43e"
+      ]
+    },
+    "deviceMapping": {
+      "value": {
+        "templateType": "CollectionContent",
+        "template": [
+          {
+            "templateType": "JsonPathContent",
+            "template": {
+              "typeName": "heartrate",
+              "typeMatchExpression": "$..[?(@heartRate)]",
+              "timestampExpression": "$.measuringTime",
+              "deviceIdExpression": "$.deviceId",
+              "patientIdExpression": "$.userId",
+              "values": [
+                {
+                  "valueName": "Heart Rate",
+                  "required": true,
+                  "valueExpression": "$.heartRate"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "destinationMapping": {
+      "value": {
+        "templateType": "CollectionFhir",
+        "template": [
+          {
+            "templateType": "CodeValueFhir",
+            "template": {
+              "typeName": "heartrate",
+              "value": {
+                "valueName": "Heart Rate",
+                "valueType": "SampledData",
+                "defaultPeriod": "5000",
+                "unit": "count/min"
+              },
+              "components": [],
+              "codes": [
+                {
+                  "code": "8867-4",
+                  "system": "http://loinc.org",
+                  "display": "Heart rate"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,568 @@
+{
+	"info": {
+		"_postman_id": "94659a7b-18d5-43e9-b9e2-6d31c582457a",
+		"name": "FHIR CALLS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "432822"
+	},
+	"item": [
+		{
+			"name": "List Metadata",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{fhirurl}}/Metadata",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Metadata"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AuthorizeGetToken",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"bearerToken\", jsonData.access_token);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "{{clientId}}",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "{{clientSecret}}",
+							"type": "text"
+						},
+						{
+							"key": "resource",
+							"value": "{{resource}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://login.microsoftonline.com/{{tenantId}}/oauth2/token",
+					"protocol": "https",
+					"host": [
+						"login",
+						"microsoftonline",
+						"com"
+					],
+					"path": [
+						"{{tenantId}}",
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Patients",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearerToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-MS-AZUREFHIR-AUDIT-USERID",
+						"value": "Dale",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{fhirurl}}/Patient",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Patient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Patients Latest",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearerToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-MS-AZUREFHIR-AUDIT-USERID",
+						"value": "Dale",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{fhirurl}}/Patient?_lastUpdated=gt{{lastUpdatedDate}}&_summary=count",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Patient"
+					],
+					"query": [
+						{
+							"key": "_lastUpdated",
+							"value": "gt{{lastUpdatedDate}}"
+						},
+						{
+							"key": "_summary",
+							"value": "count"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Observation Latest",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearerToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-MS-AZUREFHIR-AUDIT-USERID",
+						"value": "Dale",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{fhirurl}}/Observation?_lastUpdated=gt{{lastUpdatedDate}}&_summary=count",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Observation"
+					],
+					"query": [
+						{
+							"key": "_lastUpdated",
+							"value": "gt{{lastUpdatedDate}}"
+						},
+						{
+							"key": "_summary",
+							"value": "count"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Heart rate Observations",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearerToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-MS-AZUREFHIR-AUDIT-USERID",
+						"value": "Dale",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{fhirurl}}/Observation?_lastUpdated=gt{{lastUpdatedDate}}&code=http://loinc.org|8867-4&device=Device/58aa7b1d-1e98-43e5-8d27-8f7de952ba42",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Observation"
+					],
+					"query": [
+						{
+							"key": "_lastUpdated",
+							"value": "gt{{lastUpdatedDate}}"
+						},
+						{
+							"key": "_summary",
+							"value": "count",
+							"disabled": true
+						},
+						{
+							"key": "_filter",
+							"value": "code eq http://loinc.org|8867-4",
+							"disabled": true
+						},
+						{
+							"key": "code",
+							"value": "http://loinc.org|8867-4"
+						},
+						{
+							"key": "device",
+							"value": "Device/58aa7b1d-1e98-43e5-8d27-8f7de952ba42"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Devices with Heart rate Observations",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearerToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-MS-AZUREFHIR-AUDIT-USERID",
+						"value": "Dale",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{fhirurl}}/Device?_has:Observation:device:code=http://loinc.org|8867-4&_revinclude=Observation:device",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Device"
+					],
+					"query": [
+						{
+							"key": "_has:Observation:device:code",
+							"value": "http://loinc.org|8867-4"
+						},
+						{
+							"key": "_summary",
+							"value": "count",
+							"disabled": true
+						},
+						{
+							"key": "_revinclude",
+							"value": "Observation:device"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Observation For Patient",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearerToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "X-MS-AZUREFHIR-AUDIT-USERID",
+						"value": "Dale",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{fhirurl}}/Observation?subject=Patient/3150f52b-3b7a-401f-8964-2e51c39610cc",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Observation"
+					],
+					"query": [
+						{
+							"key": "subject",
+							"value": "Patient/3150f52b-3b7a-401f-8964-2e51c39610cc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Devices",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearerToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{fhirurl}}/Device",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Device"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Bundle Device & Patient",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearerToken}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"resourceType\": \"Bundle\",\r\n    \"type\": \"transaction\",\r\n    \"entry\": [\r\n        {\r\n            \"fullUrl\": \"Patient/test1\",\r\n            \"resource\": {\r\n                \"resourceType\": \"Patient\", \r\n                \"id\": \"test1\",\r\n                \"meta\": {\r\n                    \"profile\": [\r\n                        \"http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient\"\r\n                    ]\r\n                },\r\n                \"text\": {\r\n                    \"status\": \"generated\",\r\n                    \"div\": \"<div xmlns=\\\"http://www.w3.org/1999/xhtml\\\">Generated by <a href=\\\"https://github.com/synthetichealth/synthea\\\">Synthea</a>.Version identifier: v3.1.0-157-g30383d0d\\n .   Person seed: -5141519180977565368  Population seed: 1668521159681</div>\"\r\n                },\r\n                \"extension\": [\r\n                    {\r\n                        \"url\": \"http://hl7.org/fhir/us/core/StructureDefinition/us-core-race\",\r\n                        \"extension\": [\r\n                            {\r\n                                \"url\": \"ombCategory\",\r\n                                \"valueCoding\": {\r\n                                    \"system\": \"urn:oid:2.16.840.1.113883.6.238\",\r\n                                    \"code\": \"2106-3\",\r\n                                    \"display\": \"White\"\r\n                                }\r\n                            },\r\n                            {\r\n                                \"url\": \"text\",\r\n                                \"valueString\": \"White\"\r\n                            }\r\n                        ]\r\n                    },\r\n                    {\r\n                        \"url\": \"http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity\",\r\n                        \"extension\": [\r\n                            {\r\n                                \"url\": \"ombCategory\",\r\n                                \"valueCoding\": {\r\n                                    \"system\": \"urn:oid:2.16.840.1.113883.6.238\",\r\n                                    \"code\": \"2186-5\",\r\n                                    \"display\": \"Not Hispanic or Latino\"\r\n                                }\r\n                            },\r\n                            {\r\n                                \"url\": \"text\",\r\n                                \"valueString\": \"Not Hispanic or Latino\"\r\n                            }\r\n                        ]\r\n                    },\r\n                    {\r\n                        \"url\": \"http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName\",\r\n                        \"valueString\": \"Amira Oberbrunner\"\r\n                    },\r\n                    {\r\n                        \"url\": \"http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex\",\r\n                        \"valueCode\": \"M\"\r\n                    },\r\n                    {\r\n                        \"url\": \"http://hl7.org/fhir/StructureDefinition/patient-birthPlace\",\r\n                        \"valueAddress\": {\r\n                            \"city\": \"Groton\",\r\n                            \"state\": \"Massachusetts\",\r\n                            \"country\": \"US\"\r\n                        }\r\n                    },\r\n                    {\r\n                        \"url\": \"http://synthetichealth.github.io/synthea/disability-adjusted-life-years\",\r\n                        \"valueDecimal\": 0.0\r\n                    },\r\n                    {\r\n                        \"url\": \"http://synthetichealth.github.io/synthea/quality-adjusted-life-years\",\r\n                        \"valueDecimal\": 0.0\r\n                    }\r\n                ],\r\n                \"identifier\": [\r\n                    {\r\n                        \"system\": \"https://github.com/synthetichealth/synthea\",\r\n                        \"value\": \"8443c4d0-9f80-7be4-4402-9e01c7edbc24\"\r\n                    },\r\n                    {\r\n                        \"type\": {\r\n                            \"coding\": [\r\n                                {\r\n                                    \"system\": \"http://terminology.hl7.org/CodeSystem/v2-0203\",\r\n                                    \"code\": \"MR\",\r\n                                    \"display\": \"Medical Record Number\"\r\n                                }\r\n                            ],\r\n                            \"text\": \"Medical Record Number\"\r\n                        },\r\n                        \"system\": \"http://hospital.smarthealthit.org\",\r\n                        \"value\": \"8443c4d0-9f80-7be4-4402-9e01c7edbc24\"\r\n                    },\r\n                    {\r\n                        \"type\": {\r\n                            \"coding\": [\r\n                                {\r\n                                    \"system\": \"http://terminology.hl7.org/CodeSystem/v2-0203\",\r\n                                    \"code\": \"SS\",\r\n                                    \"display\": \"Social Security Number\"\r\n                                }\r\n                            ],\r\n                            \"text\": \"Social Security Number\"\r\n                        },\r\n                        \"system\": \"http://hl7.org/fhir/sid/us-ssn\",\r\n                        \"value\": \"999-62-2797\"\r\n                    },\r\n                    {\r\n                        \"value\": \"test1\"\r\n                    }\r\n                ],\r\n                \"name\": [\r\n                    {\r\n                        \"use\": \"official\",\r\n                        \"family\": \"Hamill\",\r\n                        \"given\": [\r\n                            \"Bob\",\r\n                            \"Barney\"\r\n                        ]\r\n                    }\r\n                ],\r\n                \"telecom\": [\r\n                    {\r\n                        \"system\": \"phone\",\r\n                        \"value\": \"555-536-9937\",\r\n                        \"use\": \"home\"\r\n                    }\r\n                ],\r\n                \"gender\": \"male\",\r\n                \"birthDate\": \"2022-06-23\",\r\n                \"address\": [\r\n                    {\r\n                        \"extension\": [\r\n                            {\r\n                                \"url\": \"http://hl7.org/fhir/StructureDefinition/geolocation\",\r\n                                \"extension\": [\r\n                                    {\r\n                                        \"url\": \"latitude\",\r\n                                        \"valueDecimal\": 42.5689966264154\r\n                                    },\r\n                                    {\r\n                                        \"url\": \"longitude\",\r\n                                        \"valueDecimal\": -70.97790191060226\r\n                                    }\r\n                                ]\r\n                            }\r\n                        ],\r\n                        \"line\": [\r\n                            \"167 Nader Throughway Apt 15\"\r\n                        ],\r\n                        \"city\": \"Danvers\",\r\n                        \"state\": \"MA\",\r\n                        \"postalCode\": \"01923\",\r\n                        \"country\": \"US\"\r\n                    }\r\n                ],\r\n                \"maritalStatus\": {\r\n                    \"coding\": [\r\n                        {\r\n                            \"system\": \"http://terminology.hl7.org/CodeSystem/v3-MaritalStatus\",\r\n                            \"code\": \"S\",\r\n                            \"display\": \"Never Married\"\r\n                        }\r\n                    ],\r\n                    \"text\": \"Never Married\"\r\n                },\r\n                \"multipleBirthBoolean\": false,\r\n                \"communication\": [\r\n                    {\r\n                        \"language\": {\r\n                            \"coding\": [\r\n                                {\r\n                                    \"system\": \"urn:ietf:bcp:47\",\r\n                                    \"code\": \"en-US\",\r\n                                    \"display\": \"English\"\r\n                                }\r\n                            ],\r\n                            \"text\": \"English\"\r\n                        }\r\n                    }\r\n                ]\r\n            },\r\n            \"request\": {\r\n                \"method\": \"PUT\",\r\n                \"url\": \"Patient/test1\"\r\n            }\r\n        },\r\n        {\r\n            \"fullUrl\": \"Device/device1\",\r\n            \"resource\": {\r\n                \"resourceType\": \"Device\",\r\n                \"id\": \"device1\",\r\n                \"meta\": {\r\n                    \"versionId\": \"1\",\r\n                    \"lastUpdated\": \"2022-11-15T14:52:17.145+00:00\",\r\n                    \"profile\": [\r\n                        \"http://hl7.org/fhir/us/core/StructureDefinition/us-core-implantable-device\"\r\n                    ]\r\n                },\r\n                \"identifier\": [\r\n                    {\r\n                        \"value\": \"device1\"\r\n                    }\r\n                ],\r\n                \"udiCarrier\": [\r\n                    {\r\n                        \"deviceIdentifier\": \"device1\",\r\n                        \"carrierHRF\": \"(01)device1(11)710321(17)960404(10)84546978(21)50428\"\r\n                    }\r\n                ],\r\n                \"status\": \"active\",\r\n                \"distinctIdentifier\": \"device1\",\r\n                \"manufactureDate\": \"1971-03-21T13:44:23+00:00\",\r\n                \"expirationDate\": \"1996-04-04T13:44:23+00:00\",\r\n                \"lotNumber\": \"84546978\",\r\n                \"serialNumber\": \"50428\",\r\n                \"deviceName\": [\r\n                    {\r\n                        \"name\": \"Home heartrate monitor (physical object)\",\r\n                        \"type\": \"user-friendly-name\"\r\n                    }\r\n                ],\r\n                \"type\": {\r\n                    \"coding\": [\r\n                        {\r\n                            \"system\": \"http://snomed.info/sct\",\r\n                            \"code\": \"467178001\",\r\n                            \"display\": \"Bedside heart rate monitor (physical object)\"\r\n                        }\r\n                    ],\r\n                    \"text\": \"Bedside heart rate monitor (physical object)\"\r\n                },\r\n                \"patient\": {\r\n                    \"reference\": \"Patient/test1\",\r\n                    \"display\": \"Bob Barney Hamill\"\r\n                }\r\n            },\r\n            \"request\": {\r\n                \"method\": \"PUT\",\r\n                \"url\": \"Device/device1\"\r\n            }\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{fhirurl}}",
+					"host": [
+						"{{fhirurl}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Device",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearerToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{fhirurl}}/Device/ea020a5b-67d2-4f2b-9fcd-b34ca8e30ddc",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Device",
+						"ea020a5b-67d2-4f2b-9fcd-b34ca8e30ddc"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"//postman.setGlobalVariable('currentDate', (new Date()).toISOString());",
+					"var moment = require('moment');",
+					"pm.environment.set('currentDate', moment().format((\"YYYY-MM-DD\")));",
+					"pm.environment.set('lastUpdatedDate', moment().subtract(pm.environment.get('ago'), 'hour').format((\"YYYY-MM-DDTHH:mm:ss\")));"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
